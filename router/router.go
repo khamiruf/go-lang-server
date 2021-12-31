@@ -7,21 +7,20 @@ import (
 	"net/http"
 )
 
+const portNumber = ":8080"
+
 type Router struct {
 	config config.RouterConfig
 }
 
 func NewRouter() *Router {
-	return &Router{}
+	return &Router{
+		config: config.RouterConfig{},
+	}
 }
 
 func (router *Router) Start() {
 	r := mux.NewRouter()
-	r.HandleFunc("/", handler)
-
-	http.ListenAndServe(":8080", r)
-}
-
-func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello World!")
+	fmt.Println("listening on port %d", portNumber)
+	http.ListenAndServe(portNumber, r)
 }

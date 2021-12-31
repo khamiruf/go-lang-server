@@ -4,13 +4,9 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/lib/pq"
-	"github.com/spf13/viper"
 	"go-lang-server/config"
 	"log"
 )
-
-type Database struct {
-}
 
 func setupDatabase(config *config.DBConfig) (*sql.DB, error) {
 
@@ -35,33 +31,8 @@ func setupDatabase(config *config.DBConfig) (*sql.DB, error) {
 	return db, nil
 }
 
-func loadConfig(path string) (*config.DBConfig, error) {
-	config := new(config.DBConfig)
-
-	viper.AddConfigPath(path)
-	viper.SetConfigName("app")
-	viper.SetConfigType("env")
-
-	viper.AutomaticEnv()
-
-	err := viper.ReadInConfig()
-	if err != nil {
-		return nil, err
-	}
-
-	err = viper.Unmarshal(&config)
-
-	return config, nil
-}
-
-func ConnectDB() error {
-	config, err := loadConfig(".")
-	if err != nil {
-		log.Fatal("Cannot load config: ", err)
-		return err
-	}
-
-	_, dbErr := setupDatabase(config)
+func ConnectDB(cfg config.DBConfig) error {
+	_, dbErr := setupDatabase(&cfg)
 	if dbErr != nil {
 		log.Fatalln("Error in connecting to DB")
 		return dbErr

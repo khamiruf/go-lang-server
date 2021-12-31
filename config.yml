@@ -1,0 +1,13 @@
+db_config:
+  db_driver: postgres
+  postgres_user: khamiruf
+  psotgres_password: password
+  postgres_db: GO_DATABASE
+  postgres_host: 192.168.0.104
+  postgres_port: 5432
+
+router_config:
+  address: 0.0.0.0:9981
+  read_timeout: 25
+  write_timeout: 25
+

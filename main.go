@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"go-lang-server/config"
 	"go-lang-server/router"
 	"go-lang-server/util"
+	"log"
 	"os"
 )
 
@@ -15,11 +17,18 @@ func main() {
 }
 
 func run() error {
-	if dbErr := util.ConnectDB(); dbErr != nil {
+	var cfg *config.GeneralConfig
+
+	cfg, err := util.LoadConfig(".")
+	if err != nil {
+		log.Println(err)
+	}
+
+	if dbErr := util.ConnectDB(cfg.DBConfig); dbErr != nil {
 		return dbErr
 	}
 
-	router.NewRouter()
+	router.NewRouter().Start()
 
 	return nil
 }
